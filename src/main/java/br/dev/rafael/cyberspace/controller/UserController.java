@@ -20,7 +20,7 @@ public class UserController {
 	public List<UserDto> list(String name){
 		List<User> users;
 		if(name == null) {
-			users = userRepository.findAll();			
+			users = userRepository.findAll();	
 		}else {
 			users = userRepository.findByName(name);
 		}
