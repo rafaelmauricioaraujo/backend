@@ -2,6 +2,7 @@ package br.dev.rafael.cyberspace.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -52,23 +53,34 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
-	public DetailUserDto detail(@PathVariable Long id) {
-		User user = userRepository.getOne(id);
-		return new DetailUserDto(user);
+	public ResponseEntity<DetailUserDto> detail(@PathVariable Long id) {
+		Optional<User> optional = userRepository.findById(id);
+		if(optional.isPresent()) {
+			return ResponseEntity.ok(new DetailUserDto(optional.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UpdateUserForm form){
-		User user = form.update(id, userRepository);
-		return ResponseEntity.ok(new UserDto(user));
+		Optional<User> optional = userRepository.findById(id);
+		if(optional.isPresent()) {
+			User user = form.update(id, userRepository);
+			return ResponseEntity.ok(new UserDto(user));			
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity<?> delete(@PathVariable Long id){
-		userRepository.deleteById(id);
-		return ResponseEntity.ok().build();
+		Optional<User> optional = userRepository.findById(id);
+		if(optional.isPresent()) {
+			userRepository.deleteById(id);
+			return ResponseEntity.ok().build();			
+		}
+		return ResponseEntity.notFound().build();
 	}
 
 }
