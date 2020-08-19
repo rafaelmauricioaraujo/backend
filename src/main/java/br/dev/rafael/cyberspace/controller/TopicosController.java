@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,6 +48,7 @@ public class TopicosController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<TopicoDto> cadastrar(@RequestBody @Valid TopicoForm form, UriComponentsBuilder uriBuilder) {
 		Topico topico = form.converter(cursoRepository);
 		topicoRepository.save(topico);
@@ -55,6 +57,7 @@ public class TopicosController {
 	}
 	
 	@GetMapping("/{id}")
+	@Transactional
 	public DetailTopicoDto detail(@PathVariable Long id) {
 		Topico topico = topicoRepository.getOne(id);
 		return new DetailTopicoDto(topico);
@@ -65,6 +68,13 @@ public class TopicosController {
 	public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid UpdateTopicoForm form){
 		Topico topico = form.update(id, topicoRepository);
 		return ResponseEntity.ok(new TopicoDto(topico));
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> remover(@PathVariable Long id){
+		topicoRepository.deleteById(id);
+		return ResponseEntity.ok().build();
 	}
 	
 }
