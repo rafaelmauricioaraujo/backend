@@ -1,11 +1,24 @@
 package br.dev.rafael.cyberspace.controller.form;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import br.dev.rafael.cyberspace.model.User;
 
 public class UserForm {
 	
+	@NotNull @NotEmpty @Length(min = 5) @Max(20)
 	private String name;
+	
+	@NotNull @NotEmpty @Email
 	private String email;
+	
+	@NotNull @NotEmpty @Min(5) @Max(20)
 	private String password;
 	
 	public String getName() {
