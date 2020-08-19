@@ -1,8 +1,9 @@
 package br.dev.rafael.cyberspace.controller.form;
 
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
 
 import br.dev.rafael.cyberspace.model.Curso;
 import br.dev.rafael.cyberspace.model.Topico;
@@ -10,13 +11,13 @@ import br.dev.rafael.cyberspace.repository.CursoRepository;
 
 public class TopicoForm {
 	
-	@NotNull @NotEmpty @Min(value = 5)
+	@NotNull @NotEmpty @Length(min = 5)
 	private String titulo;
 	
-	@NotNull @NotEmpty @Min(value = 10)
+	@NotNull @NotEmpty @Length(min = 10)
 	private String mensagem;
 	
-	@NotNull @NotEmpty @Min(value = 10)
+	@NotNull @NotEmpty @Length(min = 10)
 	private String nomeCurso;
 	
 	public String getTitulo() {

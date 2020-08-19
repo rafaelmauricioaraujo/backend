@@ -3,6 +3,7 @@ package br.dev.rafael.cyberspace.controller;
 import java.net.URI;
 import java.util.List;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +20,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.dev.rafael.cyberspace.controller.dto.DetailTopicoDto;
 import br.dev.rafael.cyberspace.controller.dto.TopicoDto;
 import br.dev.rafael.cyberspace.controller.form.TopicoForm;
+import br.dev.rafael.cyberspace.controller.form.UpdateTopicoForm;
 import br.dev.rafael.cyberspace.model.Topico;
 import br.dev.rafael.cyberspace.repository.CursoRepository;
 import br.dev.rafael.cyberspace.repository.TopicoRepository;
@@ -55,6 +58,13 @@ public class TopicosController {
 	public DetailTopicoDto detail(@PathVariable Long id) {
 		Topico topico = topicoRepository.getOne(id);
 		return new DetailTopicoDto(topico);
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<TopicoDto> update(@PathVariable Long id, @RequestBody @Valid UpdateTopicoForm form){
+		Topico topico = form.update(id, topicoRepository);
+		return ResponseEntity.ok(new TopicoDto(topico));
 	}
 	
 }
