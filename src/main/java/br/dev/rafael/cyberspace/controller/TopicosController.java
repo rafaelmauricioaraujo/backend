@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -38,7 +39,8 @@ public class TopicosController {
 	private CursoRepository cursoRepository;
 
 	@GetMapping
-	public List<TopicoDto> lista(String nomeCurso){
+	public List<TopicoDto> lista(@RequestParam(required = false) String nomeCurso, 
+			@RequestParam int page, @RequestParam int number){
 		List<Topico> topicos;
 		if(nomeCurso == null) {
 			topicos = topicoRepository.findAll();
