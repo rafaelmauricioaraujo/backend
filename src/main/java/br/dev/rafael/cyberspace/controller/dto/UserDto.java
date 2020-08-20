@@ -1,7 +1,7 @@
 package br.dev.rafael.cyberspace.controller.dto;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import br.dev.rafael.cyberspace.model.User;
 
@@ -27,8 +27,8 @@ public class UserDto {
 		return email;
 	}
 
-	public static List<UserDto> convert(List<User> users) {
-		return users.stream().map(UserDto::new).collect(Collectors.toList());
+	public static Page<UserDto> convert(Page<User> users) {
+		return users.map(UserDto::new);
 	}
 	
 }
