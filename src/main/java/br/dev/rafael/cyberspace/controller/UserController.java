@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -38,6 +40,7 @@ public class UserController {
 	private UserRepository userRepository;
 	
 	@GetMapping
+	@Cacheable(value = "userList")
 	public Page<UserDto> list(@RequestParam(required = false) String name,
 			@PageableDefault(sort = "id", direction = Direction.ASC) Pageable pagination){
 		
@@ -51,6 +54,7 @@ public class UserController {
 	}
 	
 	@PostMapping
+	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<UserDto> create(@RequestBody @Valid UserForm form, UriComponentsBuilder uriBuilder) {
 		User user = form.converter();
 		userRepository.save(user);
@@ -59,6 +63,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/{id}")
+	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<DetailUserDto> detail(@PathVariable Long id) {
 		Optional<User> optional = userRepository.findById(id);
 		if(optional.isPresent()) {
@@ -69,6 +74,7 @@ public class UserController {
 	
 	@PutMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UpdateUserForm form){
 		Optional<User> optional = userRepository.findById(id);
 		if(optional.isPresent()) {
@@ -80,6 +86,7 @@ public class UserController {
 	
 	@DeleteMapping("/{id}")
 	@Transactional
+	@CacheEvict(value = "userList", allEntries = true)
 	public ResponseEntity<?> delete(@PathVariable Long id){
 		Optional<User> optional = userRepository.findById(id);
 		if(optional.isPresent()) {
