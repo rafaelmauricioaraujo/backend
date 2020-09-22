@@ -19,7 +19,7 @@ import br.dev.rafael.cyberspace.repository.UserRepository;
 
 @EnableWebSecurity
 @Configuration
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
 	
 	@Autowired

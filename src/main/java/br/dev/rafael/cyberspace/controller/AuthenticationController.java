@@ -20,7 +20,7 @@ import br.dev.rafael.cyberspace.controller.form.LoginForm;
 
 @RestController
 @RequestMapping("/login")
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class AuthenticationController {
 	
 	@Autowired
